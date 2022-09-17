@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\LoginInvalidException;
+
 class AuthService
 {
     public function login(string $email, string $password)
@@ -11,15 +13,14 @@ class AuthService
             'password' => $password
         ];
 
-        if(!$token = auth('api')->attempt($login)){
-
+        if (!$token = auth()->attempt($login)) {
+            throw new LoginInvalidException();
         }
-        // dd('auth service');
 
         return $this->respondWithToken($token);
     }
 
-     /**
+    /**
      * Get the token array structure.
      *
      * @param  string $token
@@ -30,7 +31,7 @@ class AuthService
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
+            'token_type' => 'Bearer',
             'expires_in' => auth('api')->factory()->getTTL()
         ]);
     }

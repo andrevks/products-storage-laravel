@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthLoginRequest;
-use App\Models\User;
 use App\Services\AuthService;
 
 
@@ -18,6 +17,7 @@ class AuthController extends Controller
 
     public function login(AuthLoginRequest $request){
         $input = $request->validated();
+        // dd($input);
         // dd($input);
         $this->authService->login($input['email'], $input['password']);
     }
