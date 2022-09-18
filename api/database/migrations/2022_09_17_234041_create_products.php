@@ -19,6 +19,7 @@ class CreateProducts extends Migration
             $table->integer('qty')->default(0);
             $table->double('unit_price');
             $table->foreignId('category_id')->constrained();
+            $table->foreignId('user_id')->nullable()->constrained();
             $table->string('category', 30);
             $table->timestamps();
         });

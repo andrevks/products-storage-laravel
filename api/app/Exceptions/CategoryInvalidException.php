@@ -4,15 +4,14 @@ namespace App\Exceptions;
 
 use Exception;
 
-class LoginInvalidException extends Exception
+class CategoryInvalidException extends Exception
 {
-    protected $message = 'Email ou Password don\'t match.';
+    protected $message = 'Error when creating category.';
     public function render()
     {
         return response()->json([
             'error' => class_basename($this),
             'message' => $this->getMessage(),
-        ], 401);
+        ], 400);
     }
 }
- 

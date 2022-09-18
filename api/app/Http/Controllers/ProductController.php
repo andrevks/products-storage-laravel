@@ -22,7 +22,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return $this->productService->index();
+        $user = auth('api')->user();
+        return $this->productService->getAllByUser($user);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Product;
+use App\Models\User;
 
 class ProductService
 {
@@ -14,10 +15,12 @@ class ProductService
     }
 
 
-    public function index(){
-        // $user =  auth('api')->user();
-
-       return $this->product->with('category')->get();
+    public function getAllByUser(User $user=null){
+       return $this->product
+            //   ->when($user, function($query, $user) {
+            //         $query->where('user_id', $user->id);
+            //     })
+                ->get();
     }
 
 }
