@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->name('auth.')->group(function($router) {
 
     $router->post('login', [AuthController::class, 'login'])->name('login');
-    // $router->post('register', [AuthController::class, 'register'])->name('register');
+    $router->middleware('api.jwt')
+    ->get('logout', [AuthController::class, 'logout'])->name('logout');
+
 
 });
 
-Route::middleware('api.jwt')->name('products.')->group(function($router) {
+Route::middleware('api.jwt')->group(function($router) {
 
     $router->apiResource('products', ProductController::class);
     $router->apiResource('categories', ProductController::class);
