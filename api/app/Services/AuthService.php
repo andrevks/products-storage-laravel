@@ -13,11 +13,17 @@ class AuthService
             'password' => $password
         ];
 
-        if (!$token = auth()->attempt($login)) {
+        if (!$token = auth('api')->attempt($login)) {
             throw new LoginInvalidException();
         }
 
-        return $this->respondWithToken($token);
+        return [
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'expires_in' => auth('api')->factory()->getTTL()
+        ];
+
+        // return $this->respondWithToken($token);
     }
 
     /**
