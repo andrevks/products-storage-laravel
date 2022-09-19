@@ -1,9 +1,10 @@
-import { Container, Pagination, Table } from "@mantine/core"
+import { Button, Container, Pagination, Table, TextInput } from "@mantine/core"
 import { GetServerSideProps } from "next"
 import { getAPIClient } from "../../services/axios"
 import styles from './Dashboard.module.css'
 import { useState } from 'react';
 import { allProducts } from "../../services/ProductService";
+import Router from "next/router";
 
 interface ILink {
   url: string;
@@ -70,37 +71,50 @@ export default function Dashboard({
     return data.payload
   }
 
-  
-  
   return (
       <Container className={styles.dashboard}>
         <h1>Dashboard</h1>
+
+        <div>
+          <Button
+            type="submit"
+            radius="md"
+    
+              onClick={() => Router.push('/dashboard/category') }
+            uppercase
+          >
+          Criar Categoria
+          </Button>
+
+        </div>
+       
         <div>
           { pagination.data && 
             ( 
-              <Table striped highlightOnHover>
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Quantidade</th>
-                    <th>Valor Unitário</th>
-                    <th>Categoria</th>
-                    <th>Valor Total</th>
-                  </tr>
-                </thead>
-                <tbody>{rows}</tbody>
+              <>
+                <Table striped highlightOnHover>
+                    <thead>
+                      <tr>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Valor Unitário</th>
+                        <th>Categoria</th>
+                        <th>Valor Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>{rows}</tbody>
+                </Table>
 
-            </Table>
+                <Pagination 
+                  total={pagination.last_page} 
+                  size="lg" 
+                  radius="lg" 
+                  page={pagination.current_page}
+                  onChange={handlePaginationChange}
+                />
+             </>
             )
-          }   
-
-          <Pagination 
-            total={pagination.last_page} 
-            size="lg" 
-            radius="lg" 
-            page={pagination.current_page}
-            onChange={handlePaginationChange}
-          />
+          }     
         </div>
       </Container>
   )
