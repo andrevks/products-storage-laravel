@@ -14,3 +14,5 @@ export const signInUser = async ({
 //   await api.get(`${PREFIX}/token`)
 
 export const logoutUser = async () => await api.get(`${PREFIX}/logout`)
+
+export const recoverUserInfo = async () => await api.get(`${PREFIX}/me`)

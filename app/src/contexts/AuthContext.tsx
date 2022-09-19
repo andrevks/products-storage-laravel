@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, ReactNode } from 'react'
 import {
   signInUser,
   logoutUser,
+  recoverUserInfo
 } from '../services/AuthService'
 
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
@@ -48,21 +49,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const TOKEN_NAME = 'products-storage-token'
 
   useEffect(() => {
-   
-      // const { 'products-storage-token': token } = parseCookies()
+    
+    (async () => {
+      const { 'products-storage-token': token } = parseCookies()
 
-      // if (token) {
-      //   try {
-      //     const { 'products-storage-c'}
-      //     setUser(data.payload.user)
-      //   } catch (error) {
-       
-      //     destroyCookie(null, TOKEN_NAME, { path: '/' })
-      //     api.defaults.headers.common.Authorization = ''
-      //     window.location.href = '/'
-      //     setUser(null)
-      //   }
-      // }
+      console.log(token)
+      
+      if (token) {
+        try {
+         const { data: responseData } =  await recoverUserInfo() as any
+         console.log(responseData)
+        } catch (error) {
+          console.log(error)
+          // destroyCookie(null, TOKEN_NAME, { path: '/' })
+          // api.defaults.headers.common.Authorization = ''
+          // window.location.href = '/'
+          // setUser(null)
+        }
+      }
+    })()  
     
   }, [])
 
@@ -81,7 +86,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     api.defaults.headers.common.Authorization = `${token_type} ${access_token}`
 
-    setUser(user)
+    setUser(data)
 
     Router.push('/dashboard')
   }
