@@ -65,11 +65,23 @@ export const getServerSideProps: GetServerSideProps =  async ctx => {
   const api = getAPIClient(ctx);
 
   try {
-    const { data }: any = await api.get('/products')
- 
+    const { data }:any = await api.get('/products')
+
+    const { isSuccess, payload } = data as any
+    console.log(isSuccess, payload)
+    
+    if(!isSuccess){
+      return {
+        props: {}, 
+        redirect: {
+          destination: '/',
+          permanent: false
+        }
+      }
+    }
     return {
       props: {
-        products: data
+        products: payload
       }
     }
   } catch (error) {
