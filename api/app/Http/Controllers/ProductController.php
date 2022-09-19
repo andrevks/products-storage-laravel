@@ -26,16 +26,16 @@ class ProductController extends Controller
         return $this->productService->getAllByUser($user);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function allByUser()
-    {
-        $user = auth('api')->user();
-        return $this->productService->getAllByUser($user);
-    }
+    // /**
+    //  * Display a listing of the resource.
+    //  *
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function allByUser()
+    // {
+    //     $user = auth('api')->user();
+    //     return $this->productService->getAllByUser($user);
+    // }
 
 
 
