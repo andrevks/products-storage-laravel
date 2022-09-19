@@ -12,6 +12,9 @@ Route::prefix('auth')->name('auth.')->group(function($router) {
     $router->middleware('api.jwt')
     ->get('logout', [AuthController::class, 'logout'])->name('logout');
 
+    $router->middleware('api.jwt')
+    ->get('me', [AuthController::class, 'me']);
+
 });
 
 Route::middleware('api.jwt')->group(function($router) {

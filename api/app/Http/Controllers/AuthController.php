@@ -26,32 +26,11 @@ class AuthController extends Controller
         return ($loggedUser)->additional($token);
     }
 
-     /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
-    {
-        return response()->json(auth('api')->user());
+    public function me(){
+        return $this->authService->me();
     }
 
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function logout()
-    {
-        auth('api')->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
+    public function logout(){
+        return $this->authService->logout();
     }
-
-
-
-
-    // public function register(){
-
-    // }
 }
