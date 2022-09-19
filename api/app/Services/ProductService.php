@@ -21,7 +21,7 @@ class ProductService
               ->when($user, function($query, $user) {
                     $query->where('user_id', $user->id);
                 })
-                ->simplePaginate();
+                ->paginate(10);
 
 
         return response()->json(ApiMessage::message(
