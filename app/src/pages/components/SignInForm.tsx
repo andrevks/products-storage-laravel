@@ -7,8 +7,9 @@ import styles from './SignInForm.module.css'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form';
-import { signIn } from '../../services/AuthService';
 import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
 
 export interface ISigninData {
   email: string
@@ -27,8 +28,6 @@ const schema = yup
   .required()
 
 export function SignInForm(){
-  const { push } = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -37,11 +36,13 @@ export function SignInForm(){
     resolver: yupResolver(schema),
   })
 
+  const { signIn } = useContext(AuthContext)
+
+
   async function onSubmit(data: ISigninData){
     try {
       await signIn(data)
       alert("Posseguindo...")
-      push('/dashboard')
     } catch (error: any) {
       // console.log(error);
       alert(error?.message)

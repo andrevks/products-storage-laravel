@@ -13,7 +13,7 @@ export default function App(props: AppProps) {
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
     
-      <AuthProvider>
+     
         <MantineProvider
             withGlobalStyles
             withNormalizeCSS
@@ -23,10 +23,12 @@ export default function App(props: AppProps) {
               colorScheme: 'light',
             }}
           >
-            <Component {...pageProps} />
+            <AuthProvider>
+              <Component {...pageProps} />
+            </AuthProvider>
           </MantineProvider>
      
-      </AuthProvider>
+      
     </> 
   );
 }

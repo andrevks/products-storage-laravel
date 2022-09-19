@@ -1,23 +1,37 @@
 import { createContext, useState, useEffect, ReactNode } from 'react'
 import {
-  signIn,
-  Logout,
+  signInUser,
+  logoutUser,
 } from '../services/AuthService'
 
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import { api } from '../services/api'
 // import { checkTokenIsValid } from '../services/UserService'
 import { ISigninData } from '../pages/components/SignInForm'
+import Router from 'next/router'
+
+interface IUserResponse {
+  id: number
+  name: string
+  email: string
+  created_at: string
+}
+
+interface IResponseData{
+  data: IUserResponse
+  access_token: string
+  token_type: string
+  expires_in: number
+}
 
 export interface IUser {
-  fullname?: string
+  name?: string
   email: string
-  cep: string
 }
 
 interface IAuthContext {
   isAuthenticated: boolean
-  user: IUser
+  user: IUser | null
   signIn: (data: ISigninData) => Promise<void>
   logout(): void
 }
@@ -31,6 +45,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<IUser | null>(null)
   const isAuthenticated = !!user
+  const TOKEN_NAME = 'products-storage-token'
 
   useEffect(() => {
    
@@ -42,7 +57,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       //     setUser(data.payload.user)
       //   } catch (error) {
        
-      //     destroyCookie(null, 'votofacil-token', { path: '/' })
+      //     destroyCookie(null, TOKEN_NAME, { path: '/' })
       //     api.defaults.headers.common.Authorization = ''
       //     window.location.href = '/'
       //     setUser(null)
@@ -52,42 +67,43 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   async function signIn({ email, password }: ISigninData) {
-    const { data } = (await signIn({
+    const { data: responseData } = (await signInUser({
       email,
       password,
     })) as any
 
+    const { access_token, expires_in, data, token_type }: IResponseData = responseData
 
-    const { access_token, user } = data.payload
-
-    setCookie(undefined, 'products-storage-token', access_token, {
-      expires: new Date(access_token.expires_at), // expires in 7 days
-      path: '/',
+    setCookie(undefined, TOKEN_NAME, access_token, {
+      maxAge: expires_in,
+      path: '/', 
     })
 
-    api.defaults.headers.common.Authorization = `Bearer ${access_token.token}`
+    api.defaults.headers.common.Authorization = `${token_type} ${access_token}`
 
     setUser(user)
+
+    Router.push('/dashboard')
   }
 
   async function logout() {
     try {
-      await Logout()
+      await logoutUser()
     } catch (error) {
       // console.log(error);
     } finally {
-      destroyCookie(null, 'votofacil-token', { path: '/' })
+      destroyCookie(null, TOKEN_NAME, { path: '/' })
       api.defaults.headers.common.Authorization = ''
 
       setUser(null)
     }
 
-    const { data } = await checkTokenIsValid()
+    // const { data } = await checkTokenIsValid()
 
-    if (data?.payload === false) {
-      destroyCookie(null, 'votofacil-token', { path: '/' })
-      api.defaults.headers.common.Authorization = ''
-    }
+    // if (data?.payload === false) {
+    //   destroyCookie(null, TOKEN_NAME, { path: '/' })
+    //   api.defaults.headers.common.Authorization = ''
+    // }
   }
 
   return (
