@@ -46,6 +46,18 @@ class AuthService
         return response()->json(['message' => 'Successfully logged out']);
     }
 
+     /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function check($token)
+    {
+        return auth('api')->check();
+    }
+
     /**
      * Get the token array structure.
      *

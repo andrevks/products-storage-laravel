@@ -2,11 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use Api\ApiMessage;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
@@ -23,13 +26,37 @@ class apiProtectedRoute extends BaseMiddleware
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
-        } catch (Exception $e) {
-            if ($e instanceof TokenInvalidException){
-                return response()->json(['status' => 'Token is Invalid']);
-            }else if ($e instanceof TokenExpiredException){
-                return response()->json(['status' => 'Token is Expired']);
-            }else{
-                return response()->json(['status' => 'Authorization Token not found']);
+        } catch (Exception $exception) {
+            if ($exception instanceof TokenInvalidException) {
+                return response()->json(ApiMessage::message(
+                    false,
+                    401,
+                    'Token inválido.'
+                ), 401);
+            } else if ($exception instanceof TokenExpiredException) {
+                return response()->json(ApiMessage::message(
+                    false,
+                    401,
+                    'Token expirado.'
+                ), 401);
+            } else if ($exception instanceof TokenBlacklistedException) {
+                return response()->json(ApiMessage::message(
+                    false,
+                    401,
+                    'Token blacklisted.'
+                ), 401);
+            } else if ($exception instanceof UserNotDefinedException) {
+                return response()->json(ApiMessage::message(
+                    false,
+                    401,
+                    'Usuário não definido.'
+                ), 401);
+            } else {
+                return response()->json(ApiMessage::message(
+                    false,
+                    401,
+                    $exception->getMessage()
+                ), 401);
             }
         }
         return $next($request);

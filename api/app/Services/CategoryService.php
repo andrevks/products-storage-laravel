@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
+use Api\ApiMessage;
 use App\Exceptions\CategoryInvalidException;
 use App\Models\Category;
 use App\Models\User;
-
-use function PHPSTORM_META\map;
 
 class CategoryService
 {
@@ -18,7 +17,13 @@ class CategoryService
 
 
     public function getAll(){
-        return $this->category->with('products')->get();
+        $categories = $this->category->with('products')->get();
+        return  response()->json(ApiMessage::message(
+            true,
+            200,
+            '',
+            $categories
+        ), 200);
     }
 
     public function store(
@@ -48,7 +53,16 @@ class CategoryService
             ];
         }
 
-       return $category->products()->createMany($products);
+       $products = $category->products()->createMany($products);
+
+        return response()->json(ApiMessage::message(
+            true,
+            200,
+            '',
+            $products
+        ), 200);
+
+
 
 
 

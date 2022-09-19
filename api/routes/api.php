@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->name('auth.')->group(function($router) {
 
+    $router->get('check-token', [AuthController::class, 'check'])->name('check');
+
     $router->post('login', [AuthController::class, 'login'])->name('login');
 
     $router->middleware('api.jwt')

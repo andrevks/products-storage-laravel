@@ -16,10 +16,17 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        Product::factory(50)
-                 ->for(Category::factory())
-                 ->create([
-                    'category' => 'Computador'
-                 ]);
+
+        User::all()->each(function($user){
+            $user->products()->saveMany(
+                Product::factory(500)->for(Category::factory())
+                ->create([
+                   'category' => 'Computador'
+                ])
+            );
+        });
+
+
+
     }
 }

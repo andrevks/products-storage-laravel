@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb5f1a7755af4f1dbf80a75fd4763313",
+    "content-hash": "21427446c8eaae8ac9cf1b5115d23ce1",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -363,6 +363,46 @@
                 }
             ],
             "time": "2022-02-28T11:07:21+00:00"
+        },
+        {
+            "name": "dom-pixel/api-message",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dom-pixel/api-message.git",
+                "reference": "f4d368d7729d939b1c5be6efcbcf0ee88fcb4131"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dom-pixel/api-message/zipball/f4d368d7729d939b1c5be6efcbcf0ee88fcb4131",
+                "reference": "f4d368d7729d939b1c5be6efcbcf0ee88fcb4131",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Api\\": "api"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Juniel Filappi",
+                    "email": "juniel123123@outlook.com"
+                }
+            ],
+            "description": "This is Api Message for use in all projects.",
+            "support": {
+                "issues": "https://github.com/dom-pixel/api-message/issues",
+                "source": "https://github.com/dom-pixel/api-message/tree/v1.0.1"
+            },
+            "time": "2020-07-17T14:29:59+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
